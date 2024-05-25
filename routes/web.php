@@ -35,6 +35,7 @@ Route::prefix(MyApp::EMPLOYEE_SUBDIR)->middleware('auth:employee')->name('employ
     })->withoutMiddleware('auth:employee');
     
     Route::get('/home', [Employee\HomeController::class, 'index'])->name('home');
+    Route::resource('/retainer', Employee\RetainerController::class);
 
 
 });
