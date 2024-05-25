@@ -36,6 +36,8 @@ Route::prefix(MyApp::EMPLOYEE_SUBDIR)->middleware('auth:employee')->name('employ
     
     Route::get('/home', [Employee\HomeController::class, 'index'])->name('home');
     Route::resource('/retainer', Employee\RetainerController::class);
+    Route::put('/updateState/{id}', [Employee\RetainerController::class, 'updateState'])->name('updateState');
+
 
 
 });

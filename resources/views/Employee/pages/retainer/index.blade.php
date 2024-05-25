@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <input type="number" class="form-control" name="padron" autofocus >
+                                    <input type="number" class="form-control" name="padron" autofocus>
                                     @if ($errors->has('padron'))
                                         <span class="text-danger">{{ $errors->first('padron') }}</span>
                                     @endif
@@ -32,54 +32,69 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card shadow mb-4">
-                    <div class="card-body">
-                        <table id="dt-category" class="table table-striped table-bordered text-center dts">
 
-                            <thead>
-                                <th>Padron</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </thead>
-                            <tbody>
-                                @if ($retainer->count() > 0)
-                                    @foreach ($retainer as $item)
-                                        <tr>
-                                            <td>{{ $item->padron }}</td>
-                                            <td>{{ $item->state }}</td>
-                                            <td>
-                                                {{-- <a href="" class="edit-form-data" data-toggle="modal" data-target="#editModal"
-                                                onclick="editCategory({{ $item }})">
-                                                <i class="far fa-edit"></i></a> --}}
-                                                <a href="" class="delete-form-data" data-toggle="modal"
-                                                    data-target="#deleteModal"><i class="far fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="4">No se han encontrado Padrones registradas el dia de hoy</td>
-                                    </tr>
-                                @endif
+        <div class="card shadow mb-4">
+            <div class="card-body">
 
-                            </tbody>
+                <table id="" class="table table-striped table-bordered text-center dts">
+                    <thead>
+                        <th class="col-sm-1">Numero</th>
+                        <th>Padron</th>
+                        <th>Fecha y Hora</th>
+                        <th class="col-sm-2">Estado</th>
+                        <th>Acciones</th>
+                    </thead>
+                    <tbody>
+                        @if ($retainer->count() > 0)
+                            @foreach ($retainer as $index => $item)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td> 
+                                    <td>Padron: <strong>{{ $item->padron }}</strong></td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>
+                                        <form action="{{ route('employee.updateState', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <select class="form-control" name="state" onchange="this.form.submit()">
+                                                <option value="1" {{ $item->state == '1' ? 'selected' : '' }}>
+                                                    En cola</option>
+                                                <option value="2" {{ $item->state == '2' ? 'selected' : '' }}>
+                                                    Salió</option>
+                                                <option value="3" {{ $item->state == '3' ? 'selected' : '' }}>
+                                                    Voló</option>
+                                                <option value="4" {{ $item->state == '4' ? 'selected' : '' }}>
+                                                    Falla mecánica</option>
+                                            </select>
+                                        </form>
+                                    </td>
 
-                        </table>
-                    </div>
-                </div>
+                                    <td>
+                                        <a href="" class="delete-form-data" data-toggle="modal"
+                                            data-target="#deleteModal"><i class="far fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5">No se han encontrado Padrones registradas el día de hoy</td>
+                            </tr>
+                        @endif
+                    </tbody>
+
+
+                </table>
             </div>
         </div>
+
     </div>
 @endsection
 
-@push('styles')
+{{-- @push('styles')
     <link rel="stylesheet" href="{{ asset('libs/datatables/dataTables.bootstrap4.min.css') }}">
-@endpush
-
+@endpush --}}
+{{-- 
 @push('scripts')
     <script src="{{ asset('/libs/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-@endpush
+@endpush --}}
+
