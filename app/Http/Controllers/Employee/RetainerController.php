@@ -11,11 +11,27 @@ class RetainerController extends Controller
 {
     public function index()
     {
+        $turns = collect(config('const.turns'));
         $date = Carbon::now()->toDateString(); 
         $retainer = Retainer::whereDate('created_at', $date)
-                            ->orderBy('created_at', 'asc') // Ordenar por fecha y hora de registro en orden descendente
-                            ->get();
-        return view('employee.pages.retainer.index', compact('retainer'));
+        ->orderBy('created_at', 'asc')
+        ->get()
+        ->map(function($retainer) use ($turns) {
+            $turn = $turns->firstWhere('id', $retainer->turns);
+            $retainer->turn_name = $turn['name'] ?? 'N/A';
+            return $retainer;
+        });
+
+        $retainersTurn1 = $retainer->filter(function($retainer) {
+            return $retainer->turns == 1;
+        });
+
+        $retainersTurn2And3 = $retainer->filter(function($retainer) {
+            return in_array($retainer->turns, [2, 3]);
+        });
+
+        
+        return view('employee.pages.retainer.index', compact('retainersTurn1', 'retainersTurn2And3','turns'));
     }
     
     public function store(Request $request)
@@ -26,22 +42,16 @@ class RetainerController extends Controller
     
         $date = now()->toDateString();
         $existingRetainer = Retainer::where('padron', $request->padron)
-                                     ->whereDate('created_at', '=', $date)
-                                     ->first();
-    
-         if ($existingRetainer) {
-            // Si el padron ya existe, mostrar SweetAlert para confirmar si se agrega de todos modos
-            Session::flash('message', 'El padron ya ha sido registrado anteriormente.');
-            Session::flash('existingRetainer', $existingRetainer);
-            return redirect()->back();
-        }
-        // Si el padron no existe, crear el nuevo registro
+        ->whereDate('created_at', '=', $date)
+        ->first();
+
         $retainer = Retainer::create([
             'padron' => $request->padron,
             'state' => 1,
+            'turns' => $request->turns
         ]);
     
-        return redirect()->route('employee.retainer.index');
+        return redirect()->route('employee.retainer.index')->with('message', 'El Padron ' . $request->padron . ' se ha puesto en cola.');
     }
 
     public function updateState(Request $request, $id)
@@ -50,9 +60,20 @@ class RetainerController extends Controller
         if ($item) {
             $item->state = $request->input('state');
             $item->save();
-            // return back()->with('success', 'Estado actualizado correctamente');
         }
 
         return redirect()->route('employee.retainer.index');
     }
+
+
+    public function destroy(Request $request, $id)
+    {
+        $retainer = Retainer::findOrFail($id);
+        $retainer->delete();
+
+        return redirect()->route('employee.retainer.index')->with('message', 'El registro ha sido eliminado correctamente.');
+    }
+
+
+
 }

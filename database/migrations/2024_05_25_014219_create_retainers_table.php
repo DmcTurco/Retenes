@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('retainers', function (Blueprint $table) {
             $table->id();
             $table->text('padron');
+            $table->text('turns');
             $table->tinyInteger('state');
             $table->timestamps();
             $table->softDeletes();
