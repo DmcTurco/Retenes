@@ -32,12 +32,13 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Registro</span>
+                    <span>Retenes</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
 
-                        <a class="collapse-item" href="{{ route('employee.retainer.index') }}"><i class="fas fa-users fa-fw"></i> Retenes</a>
+                        <a class="collapse-item" href="{{ route('employee.retainer.index') }}"><i class="fas fa-users fa-fw"></i> Registro</a>
+                        <a class="collapse-item" href="{{ route('employee.record.index') }}"><i class="fas fa-users fa-fw"></i> Historial</a>
                         {{-- <a class="collapse-item" href="cards.html"><i class="fas fa-id-card fa-fw"></i> Roles</a>
                         <a class="collapse-item" href="cards.html"><i class="fas fa-hand-paper fa-fw"></i> Permisos</a> --}}
                     </div>

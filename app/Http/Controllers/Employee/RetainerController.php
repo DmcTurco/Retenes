@@ -33,7 +33,7 @@ class RetainerController extends Controller
         
         return view('employee.pages.retainer.index', compact('retainersTurn1', 'retainersTurn2And3','turns'));
     }
-    
+
     public function store(Request $request)
     {
         $request->validate([
