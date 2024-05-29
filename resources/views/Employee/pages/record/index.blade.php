@@ -19,7 +19,11 @@
                             </div>
                             <div class="col-md-2">
                                 <button type="button" id="searchButton" class="btn btn-primary btn-circle"> <i
-                                        class="fas fa-plus"></i></button>
+                                        class="fa fa-search"></i></button>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" id="generatePdfButton" class="btn btn-danger">
+                                    <i class="fa fa-file-pdf"></i>Generar PDF</button>
                             </div>
                         </div>
                     </div>
@@ -39,7 +43,7 @@
                                 <th class="col-sm-2">Padron</th>
                                 <th class="col-sm-2">Vuelta</th>
                                 <th class="col-sm-3">Estado</th>
-                                <th class="col-sm-3">Acciones</th>
+                                <th class="col-sm-3">Fecha</th>
                             </thead>
                             <tbody>
                                 @php $index1 = 1; @endphp
@@ -49,33 +53,13 @@
                                             <td>{{ $index1++ }}</td>
                                             <td>Padron: <strong>{{ $item->padron }}</strong></td>
                                             <td>{{ $item->turn_name }}</td>
-                                            <td>
-                                                <form action="{{ route('employee.updateState', $item->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <select class="form-control" name="state"
-                                                        onchange="this.form.submit()">
-                                                        <option value="1" {{ $item->state == '1' ? 'selected' : '' }}>
-                                                            En cola</option>
-                                                        <option value="2" {{ $item->state == '2' ? 'selected' : '' }}>
-                                                            Salió</option>
-                                                        <option value="3" {{ $item->state == '3' ? 'selected' : '' }}>
-                                                            Voló</option>
-                                                        <option value="4" {{ $item->state == '4' ? 'selected' : '' }}>
-                                                            Falla mecánica</option>
-                                                    </select>
-                                                </form>
-                                            </td>
-
-                                            <td>
-                                                {{ $item->created_at }}
-                                            </td>
+                                            <td>{{ $item->state_name }}</td>
+                                            <td>{{ $item->created_at }}</td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="5">No se han encontrado Padrones registradas el día</td>
+                                        <td colspan="5">No se han encontrado Padrones registradas en el día</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -105,33 +89,13 @@
                                             <td>{{ $index2++ }}</td>
                                             <td>Padron: <strong>{{ $item->padron }}</strong></td>
                                             <td>{{ $item->turn_name }}</td>
-                                            <td>
-                                                <form action="{{ route('employee.updateState', $item->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <select class="form-control" name="state"
-                                                        onchange="this.form.submit()">
-                                                        <option value="1" {{ $item->state == '1' ? 'selected' : '' }}>
-                                                            En cola</option>
-                                                        <option value="2" {{ $item->state == '2' ? 'selected' : '' }}>
-                                                            Salió</option>
-                                                        <option value="3" {{ $item->state == '3' ? 'selected' : '' }}>
-                                                            Voló</option>
-                                                        <option value="4" {{ $item->state == '4' ? 'selected' : '' }}>
-                                                            Falla mecánica</option>
-                                                    </select>
-                                                </form>
-                                            </td>
-
-                                            <td>
-                                                {{ $item->created_at }}
-                                            </td>
+                                            <td>{{ $item->state_name }}</td>
+                                            <td>{{ $item->created_at }}</td>
                                         </tr>
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="5">No se han encontrado Padrones registradas el día</td>
+                                        <td colspan="5">No se han encontrado Padrones registradas en el día</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -146,21 +110,73 @@
 @endsection
 
 <script>
- document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const dateInput = document.getElementById('dateInput');
         const searchButton = document.getElementById('searchButton');
-        // const selectedDate = localStorage.getItem('selectedDate');
+        const generatePdfButton = document.getElementById('generatePdfButton');
+        // Función para establecer la fecha actual en el campo de entrada
 
-        // if(selectedDate) {
-        //     dateInput.value = selectedDate;
-        // }
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.value = today;
+        }
 
+        // Comprobar si hay una fecha almacenada en el localStorage
+        const selectedDate = localStorage.getItem('selectedDate');
+
+
+        if (selectedDate) {
+            dateInput.value = selectedDate;
+        } else {
+            setTodayDate();
+        }
+
+        // searchButton.addEventListener('click', function() {
+        //     const dateValue = dateInput.value;
+
+        //     if (dateValue) {
+        //         const today = new Date().toISOString().split('T')[0];
+        //         const selectedDate = new Date(dateValue).toISOString().split('T')[0];
+        //         if (selectedDate > today) {
+        //             Swal.fire({
+        //                 icon: 'warning',
+        //                 title: 'Fecha Futura',
+        //                 text: 'La fecha seleccionada es mayor que la fecha de hoy.',
+        //                 confirmButtonText: 'Aceptar'
+        //             });
+        //         } else {
+
+        //             // Almacenar la fecha seleccionada en el localStorage
+        //             localStorage.setItem('selectedDate', dateValue);
+
+        //             const url = `{{ route('employee.getRetainer', ['date' => ':date']) }}`.replace(
+        //                 ':date', dateValue);
+        //             window.location.href = url;
+        //         }
+
+        //     } else {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Error',
+        //             text: 'Por favor seleccione una fecha.',
+        //             confirmButtonText: 'Aceptar'
+        //         });
+        //     }
+        // });
         searchButton.addEventListener('click', function() {
+            handleDateSelection('search');
+        });
+
+        generatePdfButton.addEventListener('click', function() {
+            handleDateSelection('pdf');
+        });
+
+        function handleDateSelection(action) {
             const dateValue = dateInput.value;
 
             if (dateValue) {
-                const today = new Date();
-                const selectedDate = new Date(dateValue);
+                const today = new Date().toISOString().split('T')[0];
+                const selectedDate = new Date(dateValue).toISOString().split('T')[0];
                 if (selectedDate > today) {
                     Swal.fire({
                         icon: 'warning',
@@ -169,12 +185,15 @@
                         confirmButtonText: 'Aceptar'
                     });
                 } else {
-                    // Almacenar la fecha seleccionada en el localStorage
-                    // localStorage.setItem('selectedDate', dateValue);
-                    const url = `{{ route('employee.getRetainer', ['date' => ':date']) }}`.replace(':date', dateValue);
-                    window.location.href = url;
-                }
+                    localStorage.setItem('selectedDate', dateValue);
 
+                    if (action === 'search') {
+                        const url = `{{ route('employee.getRetainer', ['date' => ':date']) }}`.replace(':date', dateValue);
+                        window.location.href = url;
+                    } else if (action === 'pdf') {
+                        generatePdf(dateValue);
+                    }
+                }
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -183,6 +202,32 @@
                     confirmButtonText: 'Aceptar'
                 });
             }
-        });
+        }
+
+
+        function generatePdf(date) {
+            axios.get(`{{ route('employee.generatePdf') }}?date=${date}`, {
+                responseType: 'blob'
+            }).then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'reporte.pdf');
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al generar el PDF.',
+                    confirmButtonText: 'Aceptar'
+                });
+            });
+        }
+
+
+
+
     });
 </script>

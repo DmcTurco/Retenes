@@ -42,6 +42,8 @@ Route::prefix(MyApp::EMPLOYEE_SUBDIR)->middleware('auth:employee')->name('employ
     Route::resource('/record', Employee\RecordController::class);
     Route::get('/getRetainer/{date}', [Employee\RecordController::class, 'getRetainer'])->name('getRetainer');
 
+    Route::get('/generatePdf', [Employee\RecordController::class,'generatePdf'])->name('generatePdf');
+
 
 
 });

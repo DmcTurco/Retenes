@@ -38,9 +38,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
 
                         <a class="collapse-item" href="{{ route('employee.retainer.index') }}"><i class="fas fa-users fa-fw"></i> Registro</a>
-                        <a class="collapse-item" href="{{ route('employee.record.index') }}"><i class="fas fa-users fa-fw"></i> Historial</a>
-                        {{-- <a class="collapse-item" href="cards.html"><i class="fas fa-id-card fa-fw"></i> Roles</a>
-                        <a class="collapse-item" href="cards.html"><i class="fas fa-hand-paper fa-fw"></i> Permisos</a> --}}
+                        <a class="collapse-item" href="{{ route('employee.record.index') }}"><i class="fas fa-id-card fa-fw"></i> Historial</a>
+                        
                     </div>
                 </div>
             </li>
