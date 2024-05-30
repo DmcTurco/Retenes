@@ -20,7 +20,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        @include('employee.layouts.partials.sidebar')
+        @include('admin.layouts.partials.sidebar')
         <div id="content-wrapper" class="d-flex flex-column">
 
             <div id="content">
@@ -176,14 +176,14 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                @include('employee.layouts.partials.content')
+                @include('admin.layouts.partials.content')
 
 
 
             </div>
             <!-- End of Main Content -->
 
-            @include('employee.layouts.partials.footer')
+            @include('admin.layouts.partials.footer')
 
 
         </div>
@@ -211,8 +211,8 @@
                 <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="{{ url('employee/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Cerrar sesión</a>
-                    <form id="logout-form" action="{{ url('employee/logout') }}" method="POST">
+                    <a class="btn btn-primary" href="{{ url('admin/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Cerrar sesión</a>
+                    <form id="logout-form" action="{{ url('admin/logout') }}" method="POST">
                         @csrf
                     </form>
                 </div>

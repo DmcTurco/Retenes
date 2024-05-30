@@ -65,7 +65,7 @@ class FortifyServiceProvider extends ServiceProvider
             if (request()->routeType() == MyApp::ADMINS_SUBDIR) {
                 return view('admin.pages.login');
             } elseif (request()->routeType() == MyApp::EMPLOYEE_SUBDIR) {
-                return view('Employee.pages.login');
+                return view('employee.pages.login');
             }
             return view('auth.login');
         });
