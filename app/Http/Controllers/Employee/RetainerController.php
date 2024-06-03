@@ -45,10 +45,15 @@ class RetainerController extends Controller
         ->whereDate('created_at', '=', $date)
         ->first();
 
+        if($existingRetainer){
+            return redirect()->back()->with('warning','El Padron ' . $request->padron . ' ya se encuentra Registrado.');
+        }
+
         $retainer = Retainer::create([
             'padron' => $request->padron,
             'state' => 1,
-            'turns' => $request->turns
+            'turns' => $request->turns,
+            'employee_id' => auth()->user()->id,
         ]);
     
         return redirect()->route('employee.retainer.index')->with('message', 'El Padron ' . $request->padron . ' se ha puesto en cola.');
@@ -66,14 +71,11 @@ class RetainerController extends Controller
     }
 
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         $retainer = Retainer::findOrFail($id);
         $retainer->delete();
-
-        return redirect()->route('employee.retainer.index')->with('message', 'El registro ha sido eliminado correctamente.');
+        return redirect()->route('employee.retainer.index')->with('delete',  'El Padron ' . $retainer->padron . ' se ha Eliminado Correctamente.');
     }
-
-
 
 }

@@ -14,8 +14,9 @@ class Retainer extends Model
 
     protected $fillable=[
         'padron',
+        'turns',
         'state',
-        'turns'
+        'employee_id',
     ];
 
 

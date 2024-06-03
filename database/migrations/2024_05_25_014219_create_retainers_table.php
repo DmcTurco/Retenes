@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('padron');
             $table->text('turns');
             $table->tinyInteger('state');
+            $table->unsignedBigInteger('employee_id');
             $table->timestamps();
             $table->softDeletes();
         });

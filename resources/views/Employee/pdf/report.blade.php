@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <h1>{{ auth()->user()->name }}</h1>
     <title>Reporte de Padrones</title>
     <style>
         table {
@@ -24,7 +25,7 @@
 <body>
     <h2>Reporte de Padrones</h2>
 
-    <h3>Turno 1</h3>
+    <h3>Unidades de 2 vueltas</h3>
     <table>
         <thead>
             <tr>
@@ -48,7 +49,7 @@
         </tbody>
     </table>
 
-    <h3>Turnos 2 y 3</h3>
+    <h3>Unidades de 2.5 y 3 vueltas</h3>
     <table>
         <thead>
             <tr>
