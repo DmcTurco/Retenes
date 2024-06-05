@@ -1,4 +1,5 @@
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,11 +20,13 @@
                             <div>
                                 <label for="name" class="form-fields">Nombre</label>
                                 <label class="mandatory-field">*</label>
-                                <input type="text" class="form-control" name="name" id="name"
+                                <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" id="name"
                                     value="{{ old('name') }}" autofocus>
+                                @if ($errors->has('name'))
+                                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                                @endif
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
