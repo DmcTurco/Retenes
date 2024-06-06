@@ -7,7 +7,6 @@
                     <span class="display-3 mr-2">≫</span>
                     <span id="titulo"></span>
                 </div>
-                {{-- <h5 id="titulo" class="modal-title text-inspinia text-primary"></h5> --}}
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -22,11 +21,9 @@
                                 <label class="mandatory-field">*</label>
                                 <input type="text"
                                     class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name"
-                                    id="name" value="{{ old('name') }}" >
+                                    id="name" value="{{ old('name') }}">
                                 <div class="invalid-feedback" id="nameError"></div>
-                                {{-- @if ($errors->has('name'))
-                                    <span class="text-danger">{{ $errors->first('name') }}</span>
-                                @endif --}}
+
                             </div>
                         </div>
                     </div>
@@ -39,9 +36,6 @@
                                     class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email"
                                     id="email" value="{{ old('email') }}">
                                 <div class="invalid-feedback" id="emailError"></div>
-                                {{-- @if ($errors->has('email'))
-                                    <span class="text-danger">{{ $errors->first('email') }}</span>
-                                @endif --}}
                             </div>
                         </div>
                         <div class="col-lg-6 form-group">
@@ -50,11 +44,8 @@
                                 <label class="mandatory-field">*</label>
                                 <input type="password"
                                     class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                                    name="password" id="password" value="">
+                                    name="password" id="password" value="" autocomplete="off">
                                 <div class="invalid-feedback" id="passwordError"></div>
-                                {{-- @if ($errors->has('password'))
-                                    <span class="text-danger">{{ $errors->first('password') }}</span>
-                                @endif --}}
                             </div>
                         </div>
                     </div>
@@ -74,6 +65,7 @@
                                 <label class="mandatory-field">*</label>
                                 <input type="text" class="form-control" name="doc_number" id="doc_number"
                                     value="{{ old('doc_number') }}">
+                                <div class="invalid-feedback" id="doc_numberError"></div>
                             </div>
                         </div>
                     </div>
@@ -85,6 +77,7 @@
                                 <label class="mandatory-field">*</label>
                                 <input type="text" class="form-control" name="cel" id="cel"
                                     value="{{ old('cel') }}">
+                                <div class="invalid-feedback" id="celError"></div>
                             </div>
                         </div>
                         <div class="col-lg-6 form-group">
@@ -127,13 +120,6 @@
             success: function(response) {
                 $('#myModal').modal('hide');
                 window.location.href = response.redirect;
-                // Swal.fire({
-                //     title: 'Éxito',
-                //     text: 'Empleado creado exitosamente.',
-                //     icon: 'success',
-                //     showConfirmButton: false,
-                //     timer: 1500
-                // })
             },
             error: function(response) {
                 if (response.status === 422) {

@@ -8,21 +8,6 @@
 @endsection
 
 @section('content')
-
-    @include('admin.pages.employee.form')
-    @if (session('message'))
-        <script>
-            Swal.fire({
-                position: "top",
-                icon: "success",
-                title: "Información",
-                text: "{{ session('message') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
-        </script>
-
-    @endif
     <div class="card">
         <div class="card-body">
             <table id="dt-employee" class="table table-striped table-bordered text-center dts">
@@ -73,19 +58,19 @@
             </table>
         </div>
     </div>
-
-    {{-- <script>
-        $(document).ready(function() {
-            var successMessage = '{{ Session::get('success') }}';
-            if (successMessage) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: successMessage,
-                });
-            }
-        });
-    </script> --}}
+    @if (session('message'))
+        <script>
+            Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "Información",
+                text: "{{ session('message') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
+    @include('admin.pages.employee.form')
 
     <script>
         $(document).ready(function() {
@@ -134,6 +119,8 @@
             $('#password').val('');
             $('#doc_number').val('');
             $('#cel').val('');
+            $('.invalid-feedback').empty().hide();
+            $('.form-control').removeClass('is-invalid');
         }
     </script>
 

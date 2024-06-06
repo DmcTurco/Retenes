@@ -18,6 +18,7 @@ class EmployeeSeeder extends Seeder
             'name' => 'Empleado',
             'email' => 'empleado@vipusa.com',
             'password' => Hash::make('0000'),
+            'doc_type' => 1,
             'status' => 1,
             'created_at' => date('Y-m-d H:i:s')
         ]);

@@ -39,9 +39,7 @@ class EmployeeController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // return redirect()->back()->withErrors($validator)->withInput();
             return response()->json(['errors' => $validator->errors()], 422);
-            // return response()->json(['success' => false, 'errors' => $validator->errors()], 200);
         }
 
         $employee = Employee::create([
@@ -57,12 +55,6 @@ class EmployeeController extends Controller
         
         session()->flash('message', 'Empleado Creado Pendejo');
         return response()->json(['redirect' => route('admin.employee.index')]);
-
-        // return redirect()->route('admin.employee.index')->with('message', 'Empleado Creado Pendejo');
-        // return response()->json([
-        //     'message' => 'Empleado creado exitosamente.',
-        //     'redirect' => route('admin.employee.index')
-        // ]);
     }
 
     public function update(Request $request){
@@ -89,13 +81,6 @@ class EmployeeController extends Controller
         ]);
 
         return redirect()->route('admin.employee.index')->with('message', 'Empleado Creado Pendejo');
-        // return response()->json(['message' => 'Empleado Creado', 'redirect' => route('admin.employee.index')]);
-        // if ($request->ajax()) {
-        //     return response()->json(['redirect' => route('admin.employee.index')]);
-        // } else {
-        //     return redirect()->route('admin.employee.index')->with('success', 'Empleado creado exitosamente.');
-        // }
-
     }
 
 

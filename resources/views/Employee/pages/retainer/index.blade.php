@@ -136,10 +136,10 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            @else
+                            {{-- @else
                                 <tr>
                                     <td colspan="5">No se han encontrado Padrones registradas el día de hoy</td>
-                                </tr>
+                                </tr> --}}
                             @endif
                         </tbody>
 
@@ -199,10 +199,10 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            @else
+                            {{-- @else
                                 <tr>
                                     <td colspan="5">No se han encontrado Padrones registradas el día de hoy</td>
-                                </tr>
+                                </tr> --}}
                             @endif
                         </tbody>
 
