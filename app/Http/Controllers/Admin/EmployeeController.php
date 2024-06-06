@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Session;
 class EmployeeController extends Controller
 {
 
@@ -28,7 +28,7 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
@@ -37,6 +37,12 @@ class EmployeeController extends Controller
             'doc_type' => 'nullable',
             'doc_number' => 'nullable|string|min:8|max:8',
         ]);
+
+        if ($validator->fails()) {
+            // return redirect()->back()->withErrors($validator)->withInput();
+            return response()->json(['errors' => $validator->errors()], 422);
+            // return response()->json(['success' => false, 'errors' => $validator->errors()], 200);
+        }
 
         $employee = Employee::create([
             'name' => $request->name,
@@ -48,9 +54,15 @@ class EmployeeController extends Controller
             'doc_number' => $request->doc_number,
             'status' => 1,
         ]);
+        
+        session()->flash('message', 'Empleado Creado Pendejo');
+        return response()->json(['redirect' => route('admin.employee.index')]);
 
-        return redirect()->route('admin.employee.index')->with('message', 'Empleado Creado Pendejo');
-
+        // return redirect()->route('admin.employee.index')->with('message', 'Empleado Creado Pendejo');
+        // return response()->json([
+        //     'message' => 'Empleado creado exitosamente.',
+        //     'redirect' => route('admin.employee.index')
+        // ]);
     }
 
     public function update(Request $request){
@@ -77,6 +89,12 @@ class EmployeeController extends Controller
         ]);
 
         return redirect()->route('admin.employee.index')->with('message', 'Empleado Creado Pendejo');
+        // return response()->json(['message' => 'Empleado Creado', 'redirect' => route('admin.employee.index')]);
+        // if ($request->ajax()) {
+        //     return response()->json(['redirect' => route('admin.employee.index')]);
+        // } else {
+        //     return redirect()->route('admin.employee.index')->with('success', 'Empleado creado exitosamente.');
+        // }
 
     }
 

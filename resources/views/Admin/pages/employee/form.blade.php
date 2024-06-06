@@ -13,18 +13,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.employee.store') }}" role="form" method="POST" id="">
+                <form action="{{ route('admin.employee.store') }}" role="form" method="POST" id="myForm">
                     @csrf
                     <div class="row">
                         <div class="col-lg-12 form-group">
                             <div>
                                 <label for="name" class="form-fields">Nombre</label>
                                 <label class="mandatory-field">*</label>
-                                <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" id="name"
-                                    value="{{ old('name') }}" autofocus>
-                                @if ($errors->has('name'))
+                                <input type="text"
+                                    class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name"
+                                    id="name" value="{{ old('name') }}" >
+                                <div class="invalid-feedback" id="nameError"></div>
+                                {{-- @if ($errors->has('name'))
                                     <span class="text-danger">{{ $errors->first('name') }}</span>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                     </div>
@@ -33,16 +35,26 @@
                             <div>
                                 <label for="email" class="form-fields">correo</label>
                                 <label class="mandatory-field">*</label>
-                                <input type="text" class="form-control" name="email" id="email"
-                                    value="{{ old('email') }}">
+                                <input type="text"
+                                    class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email"
+                                    id="email" value="{{ old('email') }}">
+                                <div class="invalid-feedback" id="emailError"></div>
+                                {{-- @if ($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                @endif --}}
                             </div>
                         </div>
                         <div class="col-lg-6 form-group">
                             <div>
                                 <label for="password" class="form-fields">Contraseña</label>
                                 <label class="mandatory-field">*</label>
-                                <input type="password" class="form-control" name="password" id="password"
-                                    value="">
+                                <input type="password"
+                                    class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                    name="password" id="password" value="">
+                                <div class="invalid-feedback" id="passwordError"></div>
+                                {{-- @if ($errors->has('password'))
+                                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                                @endif --}}
                             </div>
                         </div>
                     </div>
@@ -101,3 +113,42 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    $('#myForm').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            success: function(response) {
+                $('#myModal').modal('hide');
+                window.location.href = response.redirect;
+                // Swal.fire({
+                //     title: 'Éxito',
+                //     text: 'Empleado creado exitosamente.',
+                //     icon: 'success',
+                //     showConfirmButton: false,
+                //     timer: 1500
+                // })
+            },
+            error: function(response) {
+                if (response.status === 422) {
+                    var errors = response.responseJSON.errors;
+                    $('.invalid-feedback').empty().hide();
+                    $('.form-control').removeClass('is-invalid');
+                    $.each(errors, function(key, value) {
+                        var input = $('input[name="' + key + '"]');
+                        var errorDiv = $('#' + key + 'Error');
+                        input.addClass('is-invalid');;
+                        errorDiv.text(value[0]).show();
+                    });
+                    $('#myModal').modal('show');
+                }
+            }
+        });
+    });
+</script>

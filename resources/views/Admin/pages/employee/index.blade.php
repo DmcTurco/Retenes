@@ -10,7 +10,19 @@
 @section('content')
 
     @include('admin.pages.employee.form')
+    @if (session('message'))
+        <script>
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Información",
+                text: "{{ session('message') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
 
+    @endif
     <div class="card">
         <div class="card-body">
             <table id="dt-employee" class="table table-striped table-bordered text-center dts">
@@ -41,7 +53,8 @@
                                 </td>
                                 <td>{{ $item->doc_number ? $item->doc_number : 'No Hay' }}</td>
                                 <td>
-                                    <a href="" class="edit-form-data OpenModal" data-toggle="modal" data-target="#myModal" data-head-id="{{ $item->id }}">
+                                    <a href="" class="edit-form-data OpenModal" data-toggle="modal"
+                                        data-target="#myModal" data-head-id="{{ $item->id }}">
                                         <i class="far fa-edit"></i></a>
 
                                     <a href="" class="delete-form-data" data-toggle="modal"
@@ -60,6 +73,20 @@
             </table>
         </div>
     </div>
+
+    {{-- <script>
+        $(document).ready(function() {
+            var successMessage = '{{ Session::get('success') }}';
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: successMessage,
+                });
+            }
+        });
+    </script> --}}
+
     <script>
         $(document).ready(function() {
             $('.OpenModal').on('click', function() {
@@ -78,11 +105,11 @@
         });
 
         function getHeadHeadQuarter(id) {
-           
+
             $.ajax({
                 type: 'GET',
                 dataType: 'JSON',
-                url: '/admin/employee/' + id + '/edit', 
+                url: '/admin/employee/' + id + '/edit',
 
                 success: function(response) {
                     $('#id').val(response.employee.id);
@@ -109,6 +136,7 @@
             $('#cel').val('');
         }
     </script>
+
 @endsection
 
 @push('styles')
