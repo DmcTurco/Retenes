@@ -14,6 +14,8 @@
             <div class="modal-body">
                 <form action="{{ route('admin.employee.store') }}" role="form" method="POST" id="myForm">
                     @csrf
+
+                    <input type="hidden" name="id" id="id">
                     <div class="row">
                         <div class="col-lg-12 form-group">
                             <div>
@@ -32,7 +34,7 @@
                             <div>
                                 <label for="email" class="form-fields">correo</label>
                                 <label class="mandatory-field">*</label>
-                                <input type="text"
+                                <input type="email"
                                     class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email"
                                     id="email" value="{{ old('email') }}">
                                 <div class="invalid-feedback" id="emailError"></div>

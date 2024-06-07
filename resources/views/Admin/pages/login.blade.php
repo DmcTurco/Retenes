@@ -47,7 +47,7 @@
                                         @endif
                                     </div>
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido a Registrar tus Retenes!!!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido Administrador!!!</h1>
                                     </div>
                                     <form method="POST" action="{{ route('login') }}" class="user">
                                         @csrf

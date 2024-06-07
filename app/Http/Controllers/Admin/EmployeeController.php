@@ -8,10 +8,12 @@ use App\Models\Employee;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+
 class EmployeeController extends Controller
 {
 
-    public function index () {
+    public function index()
+    {
         $employee = Employee::all();
         return view('admin.pages.employee.index', compact('employee'));
     }
@@ -28,10 +30,12 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $id = $request->id;
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'password' => !empty($id) ? 'nullable|string|min:8' : 'required|string|min:8',
             'tel' => 'nullable',
             'cel' => 'nullable',
             'doc_type' => 'nullable',
@@ -42,49 +46,43 @@ class EmployeeController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $employee = Employee::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'tel' => $request->cel,
-            'cel' => $request->cel,
-            'doc_type' => $request->doc_type,
-            'doc_number' => $request->doc_number,
-            'status' => 1,
-        ]);
-        
-        session()->flash('message', 'Empleado Creado Pendejo');
+        if (!empty($id)) {
+            $employee = Employee::find($id);
+
+            if (!$employee) {
+                return response()->json(['error' => 'Empleado no encontrado.'], 404);
+            }
+
+            $employee->update([
+                'name' => $request->name,
+                // 'email' => $request->email,
+                'password' => $request->password ? Hash::make($request->password) : $employee->password,
+                'tel' => $request->tel,
+                'cel' => $request->cel,
+                'doc_type' => $request->doc_type,
+                'doc_number' => $request->doc_number,
+                'status' => 1,
+            ]);
+
+            session()->flash('message', 'Empleado Actualizado correctamente.');
+
+        } else {
+
+            $employee = Employee::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'tel' => $request->cel,
+                'cel' => $request->cel,
+                'doc_type' => $request->doc_type,
+                'doc_number' => $request->doc_number,
+                'status' => 1,
+            ]);
+            
+            session()->flash('message', 'Empleado Creado correctamente.');
+        }
+
+        // session()->flash('message', 'Empleado ' . (!empty($id) ? 'Actualizado' : 'Creado') . ' correctamente.');
         return response()->json(['redirect' => route('admin.employee.index')]);
     }
-
-    public function update(Request $request){
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'tel' => 'nullable',
-            'cel' => 'nullable',
-            'doc_type' => 'nullable',
-            'doc_number' => 'nullable|string|min:8|max:8',
-        ]);
-
-        $employee = Employee::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'tel' => $request->cel,
-            'cel' => $request->cel,
-            'doc_type' => $request->doc_type,
-            'doc_number' => $request->doc_number,
-            'status' => 1,
-        ]);
-
-        return redirect()->route('admin.employee.index')->with('message', 'Empleado Creado Pendejo');
-    }
-
-
-
-
-
 }
