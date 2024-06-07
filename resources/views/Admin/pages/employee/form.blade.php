@@ -109,32 +109,3 @@
 
 
 
-<script>
-    $('#myForm').submit(function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-            type: 'POST',
-            url: $(this).attr('action'),
-            data: formData,
-            success: function(response) {
-                $('#myModal').modal('hide');
-                window.location.href = response.redirect;
-            },
-            error: function(response) {
-                if (response.status === 422) {
-                    var errors = response.responseJSON.errors;
-                    $('.invalid-feedback').empty().hide();
-                    $('.form-control').removeClass('is-invalid');
-                    $.each(errors, function(key, value) {
-                        var input = $('input[name="' + key + '"]');
-                        var errorDiv = $('#' + key + 'Error');
-                        input.addClass('is-invalid');;
-                        errorDiv.text(value[0]).show();
-                    });
-                    $('#myModal').modal('show');
-                }
-            }
-        });
-    });
-</script>

@@ -39,8 +39,8 @@
 
                 <a class="collapse-item" href="{{ route('admin.employee.index') }}"><i class="fas fa-users fa-fw"></i>
                     Usuario</a>
-                <a class="collapse-item" href="cards.html"><i class="fas fa-id-card fa-fw"></i> Roles</a>
-                <a class="collapse-item" href="cards.html"><i class="fas fa-hand-paper fa-fw"></i> Permisos</a>
+                {{-- <a class="collapse-item" href="cards.html"><i class="fas fa-id-card fa-fw"></i> Roles</a>
+                <a class="collapse-item" href="cards.html"><i class="fas fa-hand-paper fa-fw"></i> Permisos</a> --}}
             </div>
         </div>
     </li>
@@ -55,8 +55,8 @@
     </div>
 
     <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+    <li class="nav-item">"
+        <a class="nav-link" href="#">
             <i class="fas fa-boxes"></i>
             <span>Productos</span></a>
     </li>

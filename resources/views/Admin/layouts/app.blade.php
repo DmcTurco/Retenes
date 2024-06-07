@@ -116,6 +116,7 @@
     @stack('scripts')
 
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/validations_and_modals.js') }}"></script>
 
     @include('sweetalert::alert')
 </body>

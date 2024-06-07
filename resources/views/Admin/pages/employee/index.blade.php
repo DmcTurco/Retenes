@@ -70,58 +70,24 @@
             });
         </script>
     @endif
+
     @include('admin.pages.employee.form')
 
     <script>
         $(document).ready(function() {
-            $('.OpenModal').on('click', function() {
-                var headId = $(this).data('head-id');
-                clearForm();
-                if (headId) {
-                    $('#titulo').text('Editar Empleado');
-                    $('#submitBtn').text('Actualizar');
-                    getHeadHeadQuarter(headId);
-                } else {
-                    $('#titulo').text('Registrar Empleado');
-                    $('#submitBtn').text('Agregar');
-                    $('#myModal').modal('show');
-                }
+            initModal('.OpenModal', '/admin/employee/',{
+                id:'head-id',
+                titleEdit: 'Editar Empleado',
+                titleCreate: 'Registrar Empleado',
+                submitTextEdit: 'Actualizar',
+                submitTextCreate: 'Agregar',
+                formId: '#myModal',
+                dataTransform: function(response) {return response.employee;}
             });
+
+            initFormSubmission('#myForm', '#myModal');
+
         });
-
-        function getHeadHeadQuarter(id) {
-
-            $.ajax({
-                type: 'GET',
-                dataType: 'JSON',
-                url: '/admin/employee/' + id + '/edit',
-
-                success: function(response) {
-                    $('#id').val(response.employee.id);
-                    $('#name').val(response.employee.name);
-                    $('#email').val(response.employee.email);
-                    $('#doc_type').val(response.employee.doc_type);
-                    $('#doc_number').val(response.employee.doc_number);
-                    $('#cel').val(response.employee.cel);
-                    $('#status').val(response.employee.status);
-                    $('#myModal').modal('show');
-                },
-                error: function(error) {
-                    console.error('Error al obtener los datos del Empleado:', error);
-                }
-            });
-        }
-
-        function clearForm() {
-            $('#id').val('');
-            $('#name').val('');
-            $('#email').val('');
-            $('#password').val('');
-            $('#doc_number').val('');
-            $('#cel').val('');
-            $('.invalid-feedback').empty().hide();
-            $('.form-control').removeClass('is-invalid');
-        }
     </script>
 
 @endsection
