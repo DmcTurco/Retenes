@@ -53,8 +53,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('employee.reloj.index') }}"><i
                         class="fas fa-users fa-fw"></i> Registro</a>
-                {{-- <a class="collapse-item" href="{{ route('employee.record.index') }}"><i
-                        class="fas fa-id-card fa-fw"></i> Calcular</a> --}}
+                <a class="collapse-item" href="{{ route('employee.frequency.index') }}"><i
+                        class="fas fa-id-card fa-fw"></i> Frecuencia</a>
             </div>
         </div>
     </li>

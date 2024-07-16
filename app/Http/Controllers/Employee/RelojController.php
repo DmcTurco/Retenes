@@ -11,7 +11,7 @@ class RelojController extends Controller
 
     public function index()
     {
-        $relojes = Reloj::orderBy('star_time', 'asc')->paginate(10);
+        $relojes = Reloj::orderBy('star_time', 'asc')->get();
         return view('Employee.pages.reloj.index', compact('relojes'));
     }
 
@@ -25,7 +25,18 @@ class RelojController extends Controller
             'number_minutes_1' => 'required|numeric|min:1|max:30',
             'number_minutes_2' => 'required|numeric|min:1|max:30',
             'number_minutes_3' => 'required|numeric|min:1|max:30',
-        ]);        
+        ]);
+
+        // Verificación de solapamiento de horas
+        $existingReloj = Reloj::where(function($query) use ($request) {
+            $query->where('star_time', '<', $request->end_time)
+                ->where('end_time', '>', $request->star_time);
+        })->exists();
+
+        if ($existingReloj) {
+            return redirect()->back()->with('warning', 'El rango de tiempo se solapa con un registro existente.');
+            // return redirect()->back()->withErrors(['star_time' => 'El rango de tiempo se solapa con un registro existente.'])->withInput();
+        }
     
         $reloj = Reloj::create([
 

@@ -29,7 +29,7 @@
                             title: 'Registro Duplicado',
                             text: "{{ session('warning') }}",
                             showConfirmButton: false,
-                            timer: 1500
+                            timer: 2500
                         });
                     </script>
                 @endif
