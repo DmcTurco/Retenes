@@ -14,6 +14,13 @@ class RelojController extends Controller
         $relojes = Reloj::orderBy('star_time', 'asc')->get();
         return view('Employee.pages.reloj.index', compact('relojes'));
     }
+    public function edit($id)
+    {
+
+        $relojes = Reloj::where('id',$id)->get();
+        dd($reloj);
+
+    }
 
 
     public function store(Request $request)

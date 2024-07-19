@@ -147,8 +147,11 @@
                                         <td>                                                      
                                             <span class="text font-weight-bold {{ $reloj->state == 1 ? 'text-success' : '' }}" > {{ $reloj->state == 1 ? 'Activo' : 'Inactivo' }}</span>
                                         <td>
-                                            <a href="#" class="delete-form-data" data-id="{{ $reloj->id }}"><i
-                                                    class="far fa-trash-alt"></i></a>
+                     
+                                            <a href="" class="edit-form-data" data-toggle="modal" data-target="#editModal">
+                                                <i class="far fa-edit"></i>
+                                            </a>
+
                                             <form id="delete-form-{{ $reloj->id }}"
                                                 action="{{ route('employee.retainer.destroy', $reloj->id) }}" method="POST"
                                                 style="display: none;">
