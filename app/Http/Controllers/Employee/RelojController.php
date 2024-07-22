@@ -14,13 +14,15 @@ class RelojController extends Controller
         $relojes = Reloj::orderBy('star_time', 'asc')->get();
         return view('Employee.pages.reloj.index', compact('relojes'));
     }
-    public function edit($id)
-    {
 
-        $relojes = Reloj::where('id',$id)->get();
-        dd($reloj);
+    // public function edit($id)
+    // {
 
-    }
+    //     $relojes = Reloj::orderBy('star_time', 'asc')->get();
+    //     $reloj = Reloj::findOrFail($id);
+    //     return view('Employee.pages.reloj.index', compact('reloj', 'relojes'));
+
+    // }
 
 
     public function store(Request $request)
@@ -42,7 +44,7 @@ class RelojController extends Controller
 
         if ($existingReloj) {
             return redirect()->back()->with('warning', 'El rango de tiempo se solapa con un registro existente.');
-            // return redirect()->back()->withErrors(['star_time' => 'El rango de tiempo se solapa con un registro existente.'])->withInput();
+            
         }
     
         $reloj = Reloj::create([
@@ -60,5 +62,47 @@ class RelojController extends Controller
     
         return redirect()->route('employee.reloj.index')->with('message', 'El Reloj ' . $request->name . ' se ha creado exitosamente.');
     }
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'star_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:star_time',
+            'number_minutes_1' => 'required|numeric|min:1|max:30',
+            'number_minutes_2' => 'required|numeric|min:1|max:30',
+            'number_minutes_3' => 'required|numeric|min:1|max:30',
+        ]);
+    
+        $startTime = $validatedData['star_time'];
+        $endTime = $validatedData['end_time'];
+    
+        // Verificar solapamiento de horarios excluyendo el registro actual
+        $overlap = Reloj::where('id', '!=', $id)
+                        ->where(function($query) use ($startTime, $endTime) {
+                            $query->where(function ($query) use ($startTime, $endTime) {
+                                $query->where('star_time', '<', $endTime)
+                                      ->where('end_time', '>', $startTime);
+                            });
+                        })->exists();
+    
+        if ($overlap) {
+            return redirect()->route('employee.reloj.index')->with('warning','Los horarios se solapan con otros registros existentes.');
+        }
+    
+        $reloj = Reloj::findOrFail($id);
+        $reloj->update($validatedData);
+    
+        return redirect()->route('employee.reloj.index')->with('message', 'Reloj actualizado con éxito');
+    }
+
+    public function destroy($id)
+    {
+        $reloj = Reloj::findOrFail($id);
+        $reloj->delete();
+
+        return redirect()->route('employee.reloj.index')->with('success', 'Reloj eliminado con éxito');
+    }
+
 
 }

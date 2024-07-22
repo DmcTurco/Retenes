@@ -123,54 +123,59 @@
                 <div class="card-body">
                     <table id="dt-employee" class="table table-striped table-bordered text-center dts">
                         <thead>
-                          
-                            <th class="col-sm-3">Detalles</th>
-                            <th class="col-sm-1">Hora inicio</th>
-                            <th class="col-sm-1">Hora Final</th>
-                            <th class="col-sm-1">Minuto 1</th>
-                            <th class="col-sm-1">Minuto 2</th>
-                            <th class="col-sm-1">Minuto 3</th>
-                            <th class="col-sm-2">Estado</th>
-                            <th class="col-sm-1">Acciones</th>
+                            <tr>
+                                <th class="col-sm-3">Detalles</th>
+                                <th class="col-sm-1">Hora inicio</th>
+                                <th class="col-sm-1">Hora Final</th>
+                                <th class="col-sm-1">Minuto 1</th>
+                                <th class="col-sm-1">Minuto 2</th>
+                                <th class="col-sm-1">Minuto 3</th>
+                                <th class="col-sm-1">Acciones</th>
+                            </tr>
                         </thead>
                         <tbody>
-
                             @if ($relojes->count() > 0)
-                                @foreach ($relojes as $reloj)
+                                @foreach ($relojes as $item)
                                     <tr>
-                                        <td>{{ $reloj->name }}</td>
-                                        <td>{{ date('H:i', strtotime($reloj->star_time)) }}</td>
-                                        <td>{{ date('H:i', strtotime($reloj->end_time)) }}</td>
-                                        <td>{{ $reloj->number_minutes_1 }}</td>
-                                        <td>{{ $reloj->number_minutes_2 }}</td>
-                                        <td>{{ $reloj->number_minutes_3 }}</td>
-                                        <td>                                                      
-                                            <span class="text font-weight-bold {{ $reloj->state == 1 ? 'text-success' : '' }}" > {{ $reloj->state == 1 ? 'Activo' : 'Inactivo' }}</span>
-                                        <td>
-                     
-                                            <a href="" class="edit-form-data" data-toggle="modal" data-target="#editModal">
-                                                <i class="far fa-edit"></i>
-                                            </a>
+                                        <form action="{{ route('employee.reloj.update', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <td>
+                                                <input type="text" name="name" class="form-control" value="{{ $item->name }}">
+                                            </td>
+                                            <td>
+                                                <input type="time" name="star_time" class="form-control text-center" value="{{ date('H:i', strtotime($item->star_time)) }}">
+                                            </td>
+                                            <td>
+                                                <input type="time" name="end_time" class="form-control text-center" value="{{ date('H:i', strtotime($item->end_time)) }}">
+                                            </td>
+                                            <td>
+                                                <input type="number" name="number_minutes_1" class="form-control text-center" value="{{ $item->number_minutes_1 }}">
+                                            </td>
+                                            <td>
+                                                <input type="number" name="number_minutes_2" class="form-control text-center" value="{{ $item->number_minutes_2 }}">
+                                            </td>
+                                            <td>
+                                                <input type="number" name="number_minutes_3" class="form-control text-center" value="{{ $item->number_minutes_3 }}">
+                                            </td>
 
-                                            <form id="delete-form-{{ $reloj->id }}"
-                                                action="{{ route('employee.retainer.destroy', $reloj->id) }}" method="POST"
-                                                style="display: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
-                                            <a href="" class="delete-form-data" data-toggle="modal"
-                                                data-target="#deleteModal"><i class="far fa-trash-alt"></i></a>
-                                        </td>
+                                            <td>
+                                                <button type="submit" class="btn btn-primary btn-circle">
+                                                    <i class="far fa-save"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-circle" onclick="deleteReloj({{ $item->id }})">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </form>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5">No se han encontrado Padrones registradas el día de hoy</td>
+                                    <td colspan="8">No se han encontrado Padrones registradas el día de hoy</td>
                                 </tr>
                             @endif
                         </tbody>
-
-
                     </table>
                 </div>
             </div>
@@ -178,6 +183,13 @@
         </div>
 
     </div>
+    <script>
+        function deleteReloj(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este reloj?')) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        }
+        </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const deleteLinks = document.querySelectorAll('.delete-form-data');
