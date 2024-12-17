@@ -58,7 +58,7 @@
     <li class="nav-item">"
         <a class="nav-link" href="#">
             <i class="fas fa-boxes"></i>
-            <span>Productos</span></a>
+            <span>Padrones</span></a>
     </li>
 
     <!-- Divider -->
