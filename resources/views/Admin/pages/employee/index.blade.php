@@ -19,11 +19,12 @@
                     <th>Cel</th>
                     <th>Tipo Doc</th>
                     <th>Num Doc</th>
+                    <th>Rol</th>
                     <th>Acciones</th>
                 </thead>
                 <tbody>
-                    @if ($employee->count() > 0)
-                        @foreach ($employee as $item)
+                    @if ($employees->count() > 0)
+                        @foreach ($employees as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
@@ -37,6 +38,7 @@
                                         {{ $item->doc_type == 1 ? 'DNI' : 'No Hay' }}</span>
                                 </td>
                                 <td>{{ $item->doc_number ? $item->doc_number : 'No Hay' }}</td>
+                                <td>{{ $item->role->name ? $item->role->name : 'No Hay' }}</td>
                                 <td>
                                     <a href="" class="edit-form-data OpenModal" data-toggle="modal"
                                         data-target="#myModal" data-head-id="{{ $item->id }}">
@@ -49,7 +51,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="4">No se ha encontrado Categorias registradas</td>
+                            <td colspan="5">No se ha encontrado Categorias registradas</td>
                         </tr>
                     @endif
 

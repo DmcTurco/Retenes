@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-6 form-group">
+                        <div class="col-lg-4 form-group">
                             <div>
                                 <label for="cel" class="form-fields">cel</label>
                                 <label class="mandatory-field">*</label>
@@ -82,7 +82,19 @@
                                 <div class="invalid-feedback" id="celError"></div>
                             </div>
                         </div>
-                        <div class="col-lg-6 form-group">
+                        <div class="col-lg-4 form-group">
+                            <div>
+                                <label for="role_id" class="form-fields">Rol</label>
+                                <label class="mandatory-field">*</label>
+                                <select class="form-control" name="role_id" id="role_id">
+                                    <option value="">--Seleccionar--</option>
+                                    @foreach ($roles as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 form-group">
                             <div>
                                 <label for="status" class="form-fields">Estado</label>
                                 <label class="mandatory-field">*</label>

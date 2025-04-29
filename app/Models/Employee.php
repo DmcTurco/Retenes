@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +24,7 @@ class Employee extends Authenticatable
         'doc_type',
         'doc_number',
         'status',
+        'role_id',
     ];
 
     protected $hidden = [
@@ -34,6 +36,10 @@ class Employee extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+    
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
 }

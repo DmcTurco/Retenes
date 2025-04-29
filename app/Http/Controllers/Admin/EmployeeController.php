@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -14,8 +15,9 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employee = Employee::all();
-        return view('admin.pages.employee.index', compact('employee'));
+        $employees = Employee::with('role')->get();
+        $roles = Role::all();
+        return view('admin.pages.employee.index', compact('employees','roles'));
     }
 
     public function edit($id)
@@ -40,6 +42,7 @@ class EmployeeController extends Controller
             'cel' => 'nullable',
             'doc_type' => 'nullable',
             'doc_number' => 'nullable|string|min:8|max:8',
+            'role_id'=> 'required|exists:roles,id',
         ]);
 
         if ($validator->fails()) {
@@ -61,7 +64,9 @@ class EmployeeController extends Controller
                 'cel' => $request->cel,
                 'doc_type' => $request->doc_type,
                 'doc_number' => $request->doc_number,
+                'role_id' => $request->role_id,
                 'status' => 1,
+  
             ]);
 
             session()->flash('message', 'Empleado Actualizado correctamente.');
@@ -76,6 +81,7 @@ class EmployeeController extends Controller
                 'cel' => $request->cel,
                 'doc_type' => $request->doc_type,
                 'doc_number' => $request->doc_number,
+                'role_id' => $request->role_id,
                 'status' => 1,
             ]);
             

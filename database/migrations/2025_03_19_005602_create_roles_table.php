@@ -5,8 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
-use function Laravel\Prompts\text;
-
 return new class extends Migration
 {
     /**
@@ -14,25 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->text('name');
-            $table->text('email')->unique();
-            $table->text('password');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->text('tel')->nullable();
-            $table->text('cel')->nullable();
-            $table->tinyInteger('doc_type')->nullable();
-            $table->text('doc_number')->nullable();
             $table->tinyInteger('status'); // 0: inactivo, 1:activo
-            $table->unsignedBigInteger('role_id')->nullable(); // 0:admin, 1:supervisor, 2:inspector
-            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });
 
+        
         Artisan::call('db:seed', [
-            '--class' => 'EmployeeSeeder',
+            '--class' => 'RoleSeeder',
             '--force' => true
         ]);
     }
@@ -42,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('roles');
     }
 };

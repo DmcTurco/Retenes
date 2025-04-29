@@ -58,6 +58,22 @@
             </div>
         </div>
     </li>
+    
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+            aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Inspectoria</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                {{-- <a class="collapse-item" href=""><i
+                        class="fas fa-users fa-fw"></i> Registro</a> --}}
+                <a class="collapse-item" href=""><i
+                        class="fas fa-id-card fa-fw"></i> Historial</a>
+            </div>
+        </div>
+    </li>
 
     {{-- <!-- Divider -->
     <hr class="sidebar-divider"> --}}
